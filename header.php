@@ -1,28 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class('d-flex flex-column min-vh-100'); ?>>
+<?php wp_body_open(); ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<header class="border-bottom bg-white py-3">
     <div class="container">
-        <a class="navbar-brand" href="<?= home_url(); ?>"><?php bloginfo('name'); ?></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar">
-            <?php wp_nav_menu(array(
-                'theme_location' => 'primary',
-                'container' => false,
-                'menu_class' => 'navbar-nav ms-auto',
-                'fallback_cb' => false,
-                'depth' => 2,
-            )); ?>
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+
+            <!-- Site name / logo -->
+            <a href="<?php echo home_url('/'); ?>" class="text-decoration-none fw-bold">
+                <?php bloginfo('name'); ?>
+            </a>
+
+            <!-- ALWAYS VISIBLE MENU – NO HIDING -->
+            <nav class="text-end">
+                <?php
+                wp_nav_menu( array(
+                    'theme_location'  => 'primary',
+                    'container'       => false,
+                    'menu_class'      => 'd-flex flex-wrap gap-4 list-unstyled mb-0',
+                    'fallback_cb'     => function() {
+                        // This shows if no menu is assigned – helps debugging
+                        echo '<ul class="d-flex flex-wrap gap-4 list-unstyled mb-0">';
+                        wp_list_pages( 'title_li=&depth=1' );
+                        echo '</ul>';
+                    },
+                ) );
+                ?>
+            </nav>
+
         </div>
     </div>
-</nav>
-
-<main class="container my-5">
+</header>
